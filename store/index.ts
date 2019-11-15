@@ -5,18 +5,25 @@ import fetch from "isomorphic-fetch";
 import { Logger } from "@vue-storefront/core/lib/logger";
 //import { processURLAddress } from "@vue-storefront/core/helpers";
 
+const state = {
+  items: []
+};
+
 const getters = {
-  getDealers: state => () => {
-    console.log('getDealers', state);
+  getDealers: state => {
     return state.dealers.dealers;
+  },
+  getLoading: state => {
+    return state.dealers.loading;
   }
 };
 
 const actions = {
   loadDealers(context, { url }) {
+    context.commit('setLoading', true);
     //const apiUrl = processURLAddress(url);
     const apiUrl = 'http://localhost:8080/api/ext/dealers/getDealers'; // @todo
-    fetch(apiUrl, {
+    return fetch(apiUrl, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       mode: "cors"
@@ -24,7 +31,8 @@ const actions = {
       .then(response => response.json())
       .then(data => {
         if (data.code === 200) {
-          context.commit('setDealers', data.result);
+          context.commit('setDealers', data.result.dealers.items);
+          context.commit('setLoading', false);
         }
       })
       .catch(err => {
@@ -37,13 +45,17 @@ const actions = {
 };
 
 const mutations = {
-  setDealers(state, data) {
-    state.dealers = data.dealers.items;
+  setDealers(state, dealers) {
+    state.items = dealers;
+  },
+  setLoading(state, loading) {
+    state.loading = loading;
   }
 };
 
 export const module: Module<DealersState, RootState> = {
   namespaced: true,
+  state,
   getters,
   actions,
   mutations

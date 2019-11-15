@@ -3,7 +3,7 @@ export function afterRegistration ({ Vue, store }) {
       const type = mutation.type
   
       if (type.endsWith('setDealers')) {
-        //Vue.prototype.$db.dealers.setItem('dealers', state.dealers).catch((reason) => {
+        //Vue.prototype.$db.setItem('dealers', state.dealers).catch((reason) => {
         //  console.error(reason)
         //})
       }

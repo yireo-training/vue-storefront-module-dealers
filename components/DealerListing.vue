@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>Dealers</h1>
-    <div v-if="!dealers">No dealers found</div>
+    <h1>{{ $t('Dealers') }}</h1>
+    <div v-if="!dealers && !loading">{{ $t('No dealers found') }}</div>
+    <div v-if="loading">{{ $t('Loading data') }}</div>
     <ul v-if="dealers">
       <li v-for="dealer in dealers" v-bind:key="dealer.id">
         {{ dealer.name }} - {{ dealer.address }}
@@ -20,7 +21,10 @@ export default {
   },
   computed: {
     dealers() {
-      return this.$store.state.dealers.dealers
+      return this.$store.state.dealers.items
+    },
+    loading() {
+      return this.$store.state.dealers.loading
     }
   }
 };
