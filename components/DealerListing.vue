@@ -15,9 +15,7 @@
 export default {
   name: "DealerListing",
   created() {
-    this.$store.dispatch("dealers/loadDealers", {
-      url: "dealers"
-    });
+    this.$store.dispatch("dealers/loadDealers");
   },
   computed: {
     dealers() {

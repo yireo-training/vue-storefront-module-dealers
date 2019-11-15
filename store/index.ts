@@ -3,7 +3,7 @@ import RootState from "@vue-storefront/core/types/RootState";
 import DealersState from "../types/DealersState";
 import fetch from "isomorphic-fetch";
 import { Logger } from "@vue-storefront/core/lib/logger";
-//import { processURLAddress } from "@vue-storefront/core/helpers";
+import { processURLAddress } from "@vue-storefront/core/helpers";
 
 const state = {
   items: []
@@ -19,10 +19,9 @@ const getters = {
 };
 
 const actions = {
-  loadDealers(context, { url }) {
+  loadDealers(context) {
     context.commit('setLoading', true);
-    //const apiUrl = processURLAddress(url);
-    const apiUrl = 'http://localhost:8080/api/ext/dealers/getDealers'; // @todo
+    const apiUrl = processURLAddress('/api/ext/dealers/getDealers');
     return fetch(apiUrl, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
